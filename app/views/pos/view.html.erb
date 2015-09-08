@@ -1,0 +1,163 @@
+<div class="row" ng-app="samarnmitrPOS" ng-controller="POSCtrl" ng-init="paid = false; cart2Load = <%= params[:id]%>">
+  <div class="col-md-6 col-md-offset-2">
+    <div class="page-header hidden-print">
+      <p ng-hide="<%= @order.paid %> || paid">
+        <a href="<%= edit_path(params[:id]) %>" class="btn btn-warning pull-left" data-no-turbolink>
+          <span class="glyphicon glyphicon-edit"></span> Edit
+        </a>
+        <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#payModal">
+          <span class="glyphicon glyphicon-usd"></span> Pay
+        </button>
+      </p>
+      <p ng-show="<%= @order.paid %> || paid">
+        <button class="btn btn-info pull-left" onclick="window.print()">
+          <span class="glyphicon glyphicon-print"></span> Print
+        </button>
+        <button class="btn btn-primary pull-right" ng-click="ship('<%= form_authenticity_token %>')">
+          <span class="glyphicon glyphicon-send"></span> Ship
+        </button>
+      </p>
+      <h3 class="text-center">
+        <strong>Status:</strong>
+        <span class="label label-success" ng-show="<%= @order.paid %> || paid">Paid</span>
+        <span class="label label-danger" ng-hide="<%= @order.paid %> || paid">Unpaid</span>
+      </h3>
+    </div>
+    <p>
+      <strong>Order ID:</strong> #<%= params[:id] %><br>
+      <strong>Sales:</strong> <%= @order.user.name %><br>
+      <strong>Name:</strong> {{customer.name}}<br>
+      <strong>Contact:</strong> {{customer.info}}
+      <h3 class="visible-print-block" ng-hide="<%= @order.paid %> || paid">
+        <span class="label label-danger">Unpaid</span>
+      </h3>
+    </p>
+    <table class="table table-striped table-hover table-condensed">
+      <thead>
+        <tr>
+          <th class="text-center">#</th>
+          <th>Product</th>
+          <th class="text-right">Price Per Unit</th>
+          <th class="text-right">Quantity</th>
+          <th class="text-right">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- items in cart -->
+        <tr ng-repeat="item in cart.items">
+          <td class="text-center">{{$index + 1}}</td>
+          <td>{{product[item.id].name}}</td>
+          <td class="text-right">{{product[item.id].price | currency:'฿':0}}</td>
+          <td class="text-right">{{item.quantity | currency:'x ':0}}</td>
+          <td class="text-right">{{product[item.id].price * item.quantity | currency:'฿':0}}</td>
+        </tr>
+        <!-- combos in cart -->
+        <tr ng-repeat="item in cart.combos">
+          <td class="text-center">{{$index + 1 + cart.items.length}}</td>
+          <td>
+            {{combo[item.id].name}}
+            <ul ng-init="result = selectCombo(item.id, item.selected)">
+              <li ng-repeat="name in result track by $index">
+                {{name}}
+              </li>
+            </ul>
+          </td>
+          <td class="text-right">{{combo[item.id].price | currency:'฿':0}}</td>
+          <td class="text-right">x 1</td>
+          <td class="text-right">{{combo[item.id].price | currency:'฿':0}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <h1 class="text-right">Total {{cartTotal() | currency:'฿':0}}</h1>
+    <hr>
+    <div ng-show="<%= @order.paid %> || paid">
+      <h1>Shipping Details</h1>
+      <table class="table table-striped table-hover table-condensed">
+        <thead>
+          <tr>
+            <!-- TODO: <th class="text-center">#</th> -->
+            <th>Product</th>
+            <th>Bought</th>
+            <th>Received</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @bought.each do |key, value| %>
+            <tr>
+              <td><%= product_name(key) %></td>
+              <td><%= value %></td>
+              <td><%= @received[key] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- payModal -->
+  <div class="modal fade" id="payModal">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Pay By Cash</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <!-- TODO: don't believe that input[type=number]s are always positive integers -->
+            <div class="form-group">
+              <label for="total" class="control-label">ต้องชำระ:</label>
+              <input type="number" class="form-control" id="total" value="{{cartTotal()}}" disabled>
+            </div>
+            <div class="form-group">
+              <label for="received" class="control-label">รับมา:</label>
+              <input type="number" class="form-control" id="received" ng-model="received">
+            </div>
+            <div class="form-group">
+              <label for="change" class="control-label">ทอน:</label>
+              <input type="number" class="form-control" id="change" value="{{received - cartTotal()}}" disabled>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <!-- TODO: don't reload, use reactive programming instead -->
+          <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="pay('<%= form_authenticity_token %>')" ng-disabled="received - cartTotal() < 0">Pay</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- shipModal -->
+  <div class="modal fade" id="shipModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Shipping Details</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th class="text-center">#</th>
+                <th>Product</th>
+                <th>Shipped</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in shipped">
+                <td>{{$index + 1}}</td>
+                <td>{{product[item.id].name}}</td>
+                <td>{{item.quantity}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <!-- TODO: don't reload, use reactive programming instead -->
+          <button type="button" class="btn btn-default" onclick="location.reload(true)">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

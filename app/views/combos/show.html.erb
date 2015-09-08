@@ -1,0 +1,26 @@
+<% if notice %>
+  <div class="alert alert-success"><%= notice %></div>
+<% end %>
+
+<p>
+  <strong>Name:</strong>
+  <%= @combo.name %>
+</p>
+
+<p>
+  <strong>Products:</strong>
+  <%= @combo.products %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @combo.price %>
+</p>
+
+<p>
+  <strong>Picture:</strong>
+  <%= @combo.picture %>
+</p>
+
+<%= link_to 'Edit', edit_combo_path(@combo) %> |
+<%= link_to 'Back', combos_path %>

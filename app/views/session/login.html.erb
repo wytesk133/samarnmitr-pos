@@ -1,0 +1,31 @@
+<div class="login-box">
+  <div class="page-header">
+    <h1><%= t(:login_title) %></h1>
+  </div>
+  <% if flash[:login_error] %>
+    <div class="alert alert-danger">
+      <%= flash[:login_error] %>
+    </div>
+  <% end %>
+  <%= form_tag do %>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <span class="glyphicon glyphicon-user"></span>
+        </div>
+        <%= text_field_tag(:username, nil, class: 'form-control', autofocus: true, required: true, placeholder: t(:username)) %>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <span class="glyphicon glyphicon-lock"></span>
+        </div>
+        <%= password_field_tag(:password, nil, class: 'form-control', required: true, placeholder: t(:password)) %>
+      </div>
+    </div>
+    <div class="form-group">
+      <%= submit_tag(t(:login), class: 'btn btn-primary btn-block') %>
+    </div>
+  <% end %>
+</div>

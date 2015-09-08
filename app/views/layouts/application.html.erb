@@ -1,14 +1,64 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Samarnmitr</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-
-<%= yield %>
-
-</body>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <% if content_for?(:title) %>
+      <title><%= yield :title %> - <%= t(:site_title) %></title>
+    <% else %>
+      <title><%= t(:site_title) %></title>
+    <% end %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body class="body-with-navbar">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="<%= root_path %>" data-no-turbolink>Samarnmitr</a>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+          <ul class="nav navbar-nav">
+            <!-- TODO: highlight active page -->
+            <li><a href="<%= pos_path %>" data-no-turbolink>POS</a></li>
+            <li><a href="#">Shipping</a></li>
+            <% if is_admin?(current_user) %>
+              <li><a href="<%= dashboard_path %>">Admin</a></li>
+            <% end %>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <%= current_user.name %>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="<%= logout_path %>"><%= t(:logout) %></a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <% if @admin_sidebar %>
+        <div class="row">
+          <div class="col-md-2 sidebar">
+            <%= render(partial: 'layouts/sidebar') %>
+          </div>
+          <div class="col-md-10 col-md-offset-2 main">
+            <%= yield %>
+        </div>
+      <% else %>
+        <%= yield %>
+      <% end %>
+  </body>
 </html>

@@ -1,0 +1,39 @@
+<% if @combo.errors.any? %>
+  <div class="alert alert-danger">
+    <strong><%= pluralize(@combo.errors.count, "error") %> prohibited this combo from being saved:</strong>
+    <ul>
+    <% @combo.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_for(@combo) do |f| %>
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control', required: true %>
+  </div>
+  <div class="form-group">
+    <%= f.label :description %>
+    <%= f.text_field :description, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :products %>
+    <%= f.text_field :products, class: 'form-control', required: true %>
+  </div>
+  <div class="form-group">
+    <%= f.label :price %>
+    <%= f.number_field :price, class: 'form-control', required: true %>
+  </div>
+  <div class="form-group">
+    <%= f.label :picture %>
+    <%= f.text_field :picture %>
+  </div>
+  <div class="checkbox">
+    <%= f.label :hidden do %>
+      <%= f.check_box :hidden %> Hidden
+    <% end %>
+  </div>
+  <%= f.submit nil, class: 'btn btn-primary' %>
+<% end %>

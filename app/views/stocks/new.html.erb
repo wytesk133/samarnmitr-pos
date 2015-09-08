@@ -1,0 +1,30 @@
+<h1>New Stock</h1>
+
+<% if @stock.errors.any? %>
+  <div class="alert alert-danger">
+    <strong><%= pluralize(@stock.errors.count, "error") %> prohibited this stock from being saved:</strong>
+    <ul>
+    <% @stock.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_for(@stock) do |f| %>
+  <div class="form-group">
+    <%= f.label :product_id %>
+    <%= f.collection_select(:product_id, Product.all, :id, :name) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :delta %>
+    <%= f.number_field :delta, class: 'form-control', required: true %>
+  </div>
+  <div class="form-group">
+    <%= f.label :remark %>
+    <%= f.text_field :remark, class: 'form-control' %>
+  </div>
+  <%= f.submit nil, class: 'btn btn-primary' %>
+<% end %>
+
+<%= link_to 'Back', stocks_path %>

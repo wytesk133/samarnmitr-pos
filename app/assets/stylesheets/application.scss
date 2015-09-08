@@ -1,0 +1,15 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+@import "**/*";
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+.body-with-navbar {
+  padding-top: 70px;
+}
+
+/* Integrate forms error with bootstrap */
+.field_with_errors {
+  @extend .has-error;
+}

@@ -1,0 +1,8 @@
+<div class="row" ng-app="samarnmitrPOS" ng-controller="POSCtrl" ng-init="cart2Load = <%= params[:id]%>">
+  <div class="col-md-6">
+    <%= render(partial: 'product_list') %>
+  </div>
+  <div class="col-md-6">
+    <%= render(partial: 'cart') %>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<% if notice %>
+  <div class="alert alert-info"><%= notice %></div>
+<% end %>
+
+<h1>Combos</h1>
+
+<p><%= link_to 'New Combo', new_combo_path %></p>
+<p>Total: <%= pluralize(@combos.length, 'combo') %></p>
+
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Products</th>
+      <th>Price</th>
+      <th>Picture</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @combos.each do |combo| %>
+      <tr>
+        <td><%= combo.id %></td>
+        <td><%= combo.name %></td>
+        <td><%= combo.products %></td>
+        <td><%= combo.price %></td>
+        <td><%= combo.picture %></td>
+        <td><%= link_to 'Show', combo %></td>
+        <td><%= link_to 'Edit', edit_combo_path(combo) %></td>
+        <td><%= link_to 'Destroy', combo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
