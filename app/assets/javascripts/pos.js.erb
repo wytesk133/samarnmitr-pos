@@ -1,4 +1,6 @@
-//=require angular
+//= require js-routes
+//= require angular
+//https://github.com/railsware/js-routes#what-about-security
 
 //angular and turbolink ._.
 //currently the problem is solved with 'data-no-turbolink'
@@ -22,8 +24,7 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
 
     //for 'pos#edit'
     $scope.loadCart = function() {
-        <!-- TODO: use load_cart_path instead -->
-        $http.get("<%= Rails.application.routes.url_helpers.pos_path() %>/load_cart/"+$scope.cart2Load)
+        $http.get(Routes.load_cart_path($scope.cart2Load))
         .then(function(response) {
             $scope.customer = response.data.customer;
             $scope.cart = response.data.cart;
@@ -32,7 +33,7 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
 
     //get products list
     $scope.getProduct = function() {
-        $http.get("<%= Rails.application.routes.url_helpers.products_json_path %>")
+        $http.get(Routes.products_json_path())
         .then(function(response) {
             $scope.products = response.data;
             $scope.product = {}; //hash table ;)
@@ -46,7 +47,7 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
 
     //get combos list
     $scope.getCombo = function() {
-        $http.get("<%= Rails.application.routes.url_helpers.combos_json_path %>")
+        $http.get(Routes.combos_json_path())
         .then(function(response) {
             $scope.combos = response.data; //TODO: optimize this procedure: there are some unused infomation
             $scope.combo = {}; //hash table ;)
@@ -139,7 +140,7 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
 
     $scope.pay = function(form_authenticity_token) {
         if(confirm("Pay now?")) {
-            $http.post("<%= Rails.application.routes.url_helpers.pay_path %>", {id: $scope.cart2Load, authenticity_token: form_authenticity_token})
+            $http.post(Routes.pay_path(), {id: $scope.cart2Load, authenticity_token: form_authenticity_token})
             .then(function(response) {
                 $scope.paid = true;
                 alert("Paid!");
@@ -149,7 +150,7 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
 
     $scope.ship = function(form_authenticity_token) {
         if(confirm("Ship now?")) {
-            $http.post("<%= Rails.application.routes.url_helpers.ship_path %>", {id: $scope.cart2Load, authenticity_token: form_authenticity_token})
+            $http.post(Routes.ship_path(), {id: $scope.cart2Load, authenticity_token: form_authenticity_token})
             .then(function(response) {
                 $scope.shipped = response.data;
                 $('#shipModal').modal('show');

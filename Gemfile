@@ -48,3 +48,5 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-datepicker'
   gem 'rails-assets-animate.css'
 end
+
+gem 'js-routes'
