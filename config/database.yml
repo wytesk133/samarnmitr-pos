@@ -11,13 +11,13 @@
 #
 default: &default
   adapter: mysql
-  username: root
-  password:
+  username: <%= ENV['SAMARNMITR_DATABASE_USERNAME'] %>
+  password: <%= ENV['SAMARNMITR_DATABASE_PASSWORD'] %>
   host: localhost
 
 development:
   <<: *default
-  database: samarnmitr_development
+  database: samarnmitr59_pos
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -47,6 +47,6 @@ test:
 #
 production:
   <<: *default
-  database: samarnmitr_production
-  username: samarnmitr
+  database: samarnmitr59_pos
+  username: <%= ENV['SAMARNMITR_DATABASE_USERNAME'] %>
   password: <%= ENV['SAMARNMITR_DATABASE_PASSWORD'] %>
