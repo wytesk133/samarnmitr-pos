@@ -23,11 +23,15 @@
         <span class="label label-danger" ng-hide="<%= @order.paid %> || paid">Unpaid</span>
       </h3>
     </div>
+      <center><img src = "/img/smm_logo.png" width="300">
+      <h4>Receipt and Shipping bill</h4></center>
     <p>
+      <div class = "col-sm-12"><p align = "right"><strong>Date and Time:</strong> !DATE AND TIME HERE!</p>
       <strong>Order ID:</strong> #<%= params[:id] %><br>
       <strong>Sales:</strong> <%= @order.user.name %><br>
       <strong>Name:</strong> {{customer.name}}<br>
       <strong>Contact:</strong> {{customer.info}}
+      </div>
       <h3 class="visible-print-block" ng-hide="<%= @order.paid %> || paid">
         <span class="label label-danger">Unpaid</span>
       </h3>
@@ -71,7 +75,8 @@
     <h1 class="text-right">Total {{cartTotal() | currency:'฿':0}}</h1>
     <hr>
     <div ng-show="<%= @order.paid %> || paid">
-      <h1>Shipping Details</h1>
+      <h2>Shipping Details</h2>
+      <p>กรุณานำใบนี้มารับสินค้าสำหรับสินค้าสั่งจอง Bring this receipt to pick up your pre-order item.</p>
       <table class="table table-striped table-hover table-condensed">
         <thead>
           <tr>
@@ -92,6 +97,8 @@
         </tbody>
       </table>
     </div>
+    <div class = "col-sm-12"><p align = "center">กรุณาตรวจสอบสินค้าก่อนออกจากเค้าเตอร์ ไม่รับเปลี่ยนหรือคืนสินค้า<br>Please check the item before leaving the counter. All sales are final.<br>คณะกรรมการนักเรียนโรงเรียนสวนกุหลาบวิทยาลัย www.skkornor.com
+    </p></div>
   </div>
 
   <!-- payModal -->
