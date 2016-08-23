@@ -10,7 +10,7 @@
         <button class="btn btn-default btn-xs" ng-click="item.quantity = item.quantity - 1" ng-disabled="item.quantity == 1">
           <span class="glyphicon glyphicon-minus"></span>
         </button>
-        <span>{{item.quantity}}</span>
+        <span ng-click="customQuantity(item)">{{item.quantity}}</span>
         <button class="btn btn-default btn-xs" ng-click="item.quantity = item.quantity + 1">
           <span class="glyphicon glyphicon-plus"></span>
         </button>

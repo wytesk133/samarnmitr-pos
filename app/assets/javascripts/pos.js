@@ -113,6 +113,16 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
         }
     };
 
+	$scope.customQuantity = function(item) {
+		var newQ = prompt('Enter quantity', item.quantity);
+		if (newQ) {
+			newQ = parseInt(newQ);
+			if (!isNaN(newQ) && newQ > 0) {
+				item.quantity = newQ;
+			}
+		}
+	};
+
     $scope.cartTotal = function() {
         var total = 0;
         angular.forEach($scope.cart.items, function(item, i) {
