@@ -42,8 +42,6 @@ class PosController < ApplicationController
 
   def view
     @order = Order.find(params[:id]) #TODO: find vs find_by_id
-    @bought = @order.bought
-    @received = @order.received
   end
 
   def pay
@@ -55,23 +53,16 @@ class PosController < ApplicationController
   end
 
   def ship
-    # ~heavy duty, heavy query~ ._.
     order = Order.find(params[:id])
-    bought = order.bought
-    received = order.received
-    @ship = Hash.new(0)
-    # TODO: http://api.rubyonrails.org/classes/ActiveRecord/Locking.html
-    bought.each do |key, value|
-      @ship[key] = [Product.find(key).current_stock, value-received[key]].min
-      @ship[key] = [@ship[key], 0].max # fail  safe TODO: find a better way
-      if @ship[key] != 0
-        stock = Stock.new
-        stock.product = Product.find(key)
-        stock.delta = -@ship[key]
-        stock.order = order
-        stock.save!
+    params[:ship].each do |key, value|
+      # TODO: use before_action to comply with DRY
+      value = Integer(value)
+      if value != 0
+        order.stocks.create!(product_id: key, delta: -value)
       end
+      # TODO: catch any errors and revert changes ._.
     end
+    redirect_to view_path(order.id)
   end
 
   private
