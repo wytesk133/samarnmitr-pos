@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   # pay
   post 'pos/pay' => 'pos#pay', as: :pay
   # ship
-  post 'pos/ship' => 'pos#ship', as: :ship
+  post 'pos/ship/:id' => 'pos#ship', as: :ship
 
   get 'admin' => 'admin#index'
 

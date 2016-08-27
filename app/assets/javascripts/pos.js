@@ -65,27 +65,27 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
         $scope.cart.items.push(item);
     };
 
-	// initialize or else search.id will be undefined
-	$scope.search = { id: '' };
+    // initialize or else search.id will be undefined
+    $scope.search = { id: '' };
 
-	$scope.comp = function(actual, expected) {
-		if (expected == '') return true;
-		return angular.equals(actual, parseInt(expected));
+    $scope.comp = function(actual, expected) {
+        if (expected == '') return true;
+        return angular.equals(actual, parseInt(expected));
     };
 
-	$scope.addById = function() {
-		if($('.nav-tabs .active').text() == 'Products') {
-			if ($scope.search.id == '') {
-				var len = $scope.cart.items.length;
-				if (len > 0) {
-					$scope.cart.items[len - 1].quantity ++;
-				}
-			}
-			else if ($scope.result.length == 1) {
-				$scope.addProduct2Cart($scope.result[0]);
-			}
-		}
-		$scope.search.id = '';
+    $scope.addById = function() {
+        if($('.nav-tabs .active').text() == 'Products') {
+            if ($scope.search.id == '') {
+                var len = $scope.cart.items.length;
+                if (len > 0) {
+                    $scope.cart.items[len - 1].quantity ++;
+                }
+            }
+            else if ($scope.result.length == 1) {
+                $scope.addProduct2Cart($scope.result[0]);
+            }
+        }
+        $scope.search.id = '';
     };
 
     $scope.showComboModal = function(combo) {
@@ -136,15 +136,15 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
         }
     };
 
-	$scope.customQuantity = function(item) {
-		var newQ = prompt('Enter quantity', item.quantity);
-		if (newQ) {
-			newQ = parseInt(newQ);
-			if (!isNaN(newQ) && newQ > 0) {
-				item.quantity = newQ;
-			}
-		}
-	};
+    $scope.customQuantity = function(item) {
+        var newQ = prompt('Enter quantity', item.quantity);
+        if (newQ) {
+            newQ = parseInt(newQ);
+            if (!isNaN(newQ) && newQ > 0) {
+                item.quantity = newQ;
+            }
+        }
+    };
 
     $scope.cartTotal = function() {
         var total = 0;
@@ -177,16 +177,6 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
             .then(function(response) {
                 $scope.paid = true;
                 alert("Paid!");
-            }, raiseHttpError);
-        }
-    };
-
-    $scope.ship = function(form_authenticity_token) {
-        if(confirm("Ship now?")) {
-            $http.post(Routes.ship_path(), {id: $scope.cart2Load, authenticity_token: form_authenticity_token})
-            .then(function(response) {
-                $scope.shipped = response.data;
-                $('#shipModal').modal('show');
             }, raiseHttpError);
         }
     };
