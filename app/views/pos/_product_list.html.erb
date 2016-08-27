@@ -1,7 +1,7 @@
-<form class="pos-search-box">
+<form class="pos-search-box" ng-submit="addById()">
   <div class="form-group">
-    <input type="text" class="form-control" placeholder="Search..." ng-model="search">
-    <span class="glyphicon glyphicon-search"></span>
+    <input type="text" class="form-control" placeholder="Enter ID..." ng-model="search.id">
+    <span class="glyphicon glyphicon-plus"></span>
   </div>
 </form>
 <!-- Nav tabs -->
@@ -12,7 +12,7 @@
 <!-- Tab panes -->
 <div class="tab-content">
   <div class="tab-pane active" id="products">
-    <div class="pos-product-item" ng-repeat="item in products | filter:search">
+    <div class="pos-product-item" ng-repeat="item in products | filter:search:comp as result">
       <p><span class="glyphicon glyphicon-picture"></span></p>
       <p>{{item.name}}</p>
       <p>{{item.price | currency:'฿':0}}</p>
