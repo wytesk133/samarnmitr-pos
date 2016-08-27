@@ -65,6 +65,29 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
         $scope.cart.items.push(item);
     };
 
+	// initialize or else search.id will be undefined
+	$scope.search = { id: '' };
+
+	$scope.comp = function(actual, expected) {
+		if (expected == '') return true;
+		return angular.equals(actual, parseInt(expected));
+    };
+
+	$scope.addById = function() {
+		if($('.nav-tabs .active').text() == 'Products') {
+			if ($scope.search.id == '') {
+				var len = $scope.cart.items.length;
+				if (len > 0) {
+					$scope.cart.items[len - 1].quantity ++;
+				}
+			}
+			else if ($scope.result.length == 1) {
+				$scope.addProduct2Cart($scope.result[0]);
+			}
+		}
+		$scope.search.id = '';
+    };
+
     $scope.showComboModal = function(combo) {
         $scope.currentCombo = combo; //TODO: optimize this procedure
         $("input[name^='choice-']").prop("checked", false);
