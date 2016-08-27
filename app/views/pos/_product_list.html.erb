@@ -10,9 +10,11 @@
   <li role="presentation"><a href="#combos" data-toggle="tab">Combos</a></li>
 </ul>
 <!-- Tab panes -->
-<div class="tab-content">
+<div class="tab-content pos-tab">
   <div class="tab-pane active" id="products">
+    <!-- TODO: use flexbox -->
     <div class="pos-product-item" ng-repeat="item in products | filter:search:comp as result">
+	  <!-- TODO: use real icons instead of placeholders -->
       <p><span class="glyphicon glyphicon-picture"></span></p>
       <p>{{item.name}}</p>
       <p>{{item.price | currency:'฿':0}}</p>
