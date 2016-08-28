@@ -40,6 +40,10 @@ class PosController < ApplicationController
 
   def view
     @order = Order.find(params[:id])
+    # TODO: use json type for activerecord
+    # TODO: in-place parsing
+    @cart = JSON.parse(@order.cart, object_class: OpenStruct)
+    @customer = JSON.parse(@order.customer, object_class: OpenStruct)
   end
 
   def pay
@@ -47,7 +51,7 @@ class PosController < ApplicationController
     order = Order.find(params[:id])
     order.paid = true
     order.save!
-    render nothing: true #TODO: render success (json style)
+    redirect_to view_path(order.id)
   end
 
   def ship

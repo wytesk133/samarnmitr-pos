@@ -6,7 +6,7 @@ class SessionController < ApplicationController
   end
 
   def auth
-    user = User.find_by username: params[:username]
+    user = User.find_by username: params[:username] # case sensitivity?
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
       redirect_to root_path
