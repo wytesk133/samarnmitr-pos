@@ -101,7 +101,7 @@
   </div>
 
   <!-- payModal -->
-  <div class="modal fade" id="payModal">
+  <div class="modal fade" id="payModal" tabindex="-1">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">
@@ -134,7 +134,7 @@
   </div>
 
   <!-- shipModal -->
-  <div class="modal fade" id="shipModal">
+  <div class="modal fade" id="shipModal" tabindex="-1">
     <div class="modal-dialog">
       <%= form_tag ship_path(@order.id), class: 'modal-content' do %>
         <div class="modal-header">
@@ -163,7 +163,8 @@
           </table>
         </div>
         <div class="modal-footer">
-      <button type="submit" class="btn btn-primary">Ship</button>
+          <button type="button" class="btn btn-default pull-left" onclick="$('#shipModal select option:last-child').attr('selected', true);">ALL</button>
+          <button type="submit" class="btn btn-primary">Ship</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
       <% end %>
