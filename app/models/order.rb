@@ -2,6 +2,11 @@ class Order < ActiveRecord::Base
   belongs_to :user
   has_many :stocks
 
+  # TODO: def total
+  # what will happen if a product is deleted or price is changed?
+
+  # TODO: cache `bought` and `received`
+
   def bought
     cart = JSON.parse(self.cart)
     count = Hash.new(0)
@@ -30,5 +35,11 @@ class Order < ActiveRecord::Base
       count[stock.product.id] -= stock.delta
     end
     count
+  end
+
+  # TODO: def pending
+
+  def completed
+    self.bought == self.received
   end
 end
