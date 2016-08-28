@@ -17,10 +17,8 @@ class PosController < ApplicationController
     order.user = current_user #TODO: this is somehow "._."
     #TODO: verify params again: whether they are submitted or not
     order.cart = params[:cart]
-    customer = Hash.new
-    customer[:name] = params[:customer_name]
-    customer[:info] = params[:customer_info]
-    order.customer = customer.to_json
+    #TODO: sanitize
+    order.customer = params[:customer].to_json
     #TODO: re-calculate sum
     #for now, just trust user input (although that is scary ._.)
     order.total = params[:total]
@@ -37,11 +35,11 @@ class PosController < ApplicationController
   end
 
   def load_cart
-    @order = Order.find(params[:id]) #TODO: if not found?
+    @order = Order.find(params[:id])
   end
 
   def view
-    @order = Order.find(params[:id]) #TODO: find vs find_by_id
+    @order = Order.find(params[:id])
   end
 
   def pay
