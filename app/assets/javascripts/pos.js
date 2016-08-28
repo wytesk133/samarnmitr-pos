@@ -167,10 +167,6 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
         }
     };
 
-    $scope.cartJson = function() {
-        return angular.toJson($scope.cart);
-    };
-
     $scope.pay = function(form_authenticity_token) {
         if(confirm("Pay now?")) {
             $http.post(Routes.pay_path(), {id: $scope.cart2Load, authenticity_token: form_authenticity_token})

@@ -51,14 +51,14 @@
   </li>
 </ul>
 
-<form class="row" method="post" action="">
+<%= form_tag nil, class: 'row' do %>
   <div class="col-md-6">
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">
           <span class="glyphicon glyphicon-user"></span>
         </div>
-        <input type="text" name="customer_name" class="form-control" required placeholder="Customer Name..." ng-model="customer.name">
+        <input type="text" name="customer[name]" class="form-control" required placeholder="Customer Name..." ng-model="customer.name">
       </div>
     </div>
     <div class="form-group">
@@ -66,7 +66,7 @@
         <div class="input-group-addon">
           <span class="glyphicon glyphicon-envelope"></span>
         </div>
-        <textarea name="customer_info" class="form-control fixed" rows="3" placeholder="Student ID or Mobile Phone Number or Address..." ng-model="customer.info" required></textarea>
+        <textarea name="customer[info]" class="form-control fixed" rows="3" placeholder="Student ID or Mobile Phone Number or Any form of reference..." ng-model="customer.info" required></textarea>
       </div>
     </div>
   </div>
@@ -75,7 +75,6 @@
     <button class="btn btn-lg btn-danger" type="button" ng-click="clear()" ng-disabled="cartIsEmpty() && customer.name == '' && customer.info == ''">Clear</button>
     <button class="btn btn-lg btn-success" type="submit" ng-disabled="cartIsEmpty()">Checkout</button>
   </div>
-  <input type="hidden" name="cart" value="{{cartJson()}}">
+  <input type="hidden" name="cart" value="{{cart}}">
   <input type="hidden" name="total" value="{{cartTotal()}}">
-  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-</form>
+<% end %>
