@@ -15,11 +15,11 @@ Rails.application.routes.draw do
   get 'pos/combos' => 'pos#combos', as: :combos_json
   get 'pos/load_cart/:id' => 'pos#load_cart', as: :load_cart
   # view details & print reciept
-  get 'pos/view/:id' => 'pos#view', as: :view
+  get 'orders/:id' => 'pos#view', as: :view
   # pay
-  post 'pos/pay' => 'pos#pay', as: :pay
+  post 'orders/:id/pay' => 'pos#pay', as: :pay
   # ship
-  post 'pos/ship/:id' => 'pos#ship', as: :ship
+  post 'orders/:id/ship' => 'pos#ship', as: :ship
 
   get 'admin' => 'admin#index'
 

@@ -14,7 +14,7 @@
 <%= form_for(@stock) do |f| %>
   <div class="form-group">
     <%= f.label :product_id %>
-    <%= f.collection_select(:product_id, Product.all, :id, :name) %>
+    <%= f.collection_select(:product_id, Product.all, :id, :name, {}, class: 'form-control') %>
   </div>
   <div class="form-group">
     <%= f.label :delta %>

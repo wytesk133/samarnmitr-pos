@@ -83,9 +83,9 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
             }
             else if ($scope.result.length == 1) {
                 $scope.addProduct2Cart($scope.result[0]);
+                $scope.search.id = '';
             }
         }
-        $scope.search.id = '';
     };
 
     $scope.showComboModal = function(combo) {
@@ -161,19 +161,10 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
         return $scope.cart.items.length + $scope.cart.combos.length == 0;
     };
 
+    // TODO: change to modal
     $scope.clear = function() {
         if(confirm("Clear shopping cart?")) {
             $scope.init();
-        }
-    };
-
-    $scope.pay = function(form_authenticity_token) {
-        if(confirm("Pay now?")) {
-            $http.post(Routes.pay_path(), {id: $scope.cart2Load, authenticity_token: form_authenticity_token})
-            .then(function(response) {
-                $scope.paid = true;
-                alert("Paid!");
-            }, raiseHttpError);
         }
     };
 }]);

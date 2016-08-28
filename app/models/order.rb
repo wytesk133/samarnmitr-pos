@@ -8,18 +8,18 @@ class Order < ActiveRecord::Base
   # TODO: cache `bought` and `received`
 
   def bought
-    cart = JSON.parse(self.cart)
+    cart = JSON.parse(self.cart, object_class: OpenStruct)
     count = Hash.new(0)
-    cart['items'].each do |item|
-        count[item['id']] += item['quantity']
+    cart.items.each do |item|
+        count[item.id] += item.quantity
     end
-    cart['combos'].each do |item|
-        combo = Combo.find(item['id'])
-        products = JSON.parse(combo['products'])
+    cart.combos.each do |item|
+        combo = Combo.find(item.id)
+        products = JSON.parse(combo.products)
         pointer = 0
         products.each do |i|
           if i.kind_of?(Array)
-            count[i[item['selected'][pointer]]] += 1
+            count[i[item.selected[pointer]]] += 1
             pointer += 1
           else
             count[i] += 1

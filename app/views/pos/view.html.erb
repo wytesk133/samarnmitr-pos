@@ -1,41 +1,74 @@
-<div class="row" ng-app="samarnmitrPOS" ng-controller="POSCtrl" ng-init="paid = false; cart2Load = <%= params[:id]%>">
-  <div class="col-md-6 col-md-offset-2">
-    <div class="page-header hidden-print">
-      <p ng-hide="<%= @order.paid %> || paid">
-        <a href="<%= edit_path(params[:id]) %>" class="btn btn-warning pull-left" data-no-turbolink>
-          <span class="glyphicon glyphicon-edit"></span> Edit
+<div class="row" ng-app="samarnmitrPOS">
+  <div class="col-xs-12 col-md-6 col-md-offset-3">
+    <div class="hidden-print">
+      <% if @order.paid %>
+        <button class="btn btn-info pull-left" onclick="window.print()">
+          <i class="fa fa-print"></i> Print
+        </button>
+        <% if @order.completed %>
+          <button class="btn btn-default pull-right" disabled>
+            <i class="fa fa-shopping-bag"></i> All Done!
+          </button>
+        <% else %>
+          <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#shipModal">
+            <i class="fa fa-shopping-bag"></i> Ship
+          </button>
+        <% end %>
+      <% else %>
+        <a href="<%= edit_path(params[:id]) %>" class="btn btn-warning pull-left">
+          <i class="fa fa-pencil"></i> Edit
         </a>
         <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#payModal">
-          <span class="glyphicon glyphicon-usd"></span> Pay
+          <i class="fa fa-usd"></i> Pay
         </button>
-      </p>
-      <p ng-show="<%= @order.paid %> || paid">
-        <button class="btn btn-info pull-left" onclick="window.print()">
-          <span class="glyphicon glyphicon-print"></span> Print
-        </button>
-        <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#shipModal">
-          <span class="glyphicon glyphicon-send"></span> Ship
-        </button>
-      </p>
-      <h3 class="text-center">
-        <strong>Status:</strong>
-        <span class="label label-success" ng-show="<%= @order.paid %> || paid">Paid</span>
-        <span class="label label-danger" ng-hide="<%= @order.paid %> || paid">Unpaid</span>
-      </h3>
+      <% end %>
     </div>
-      <center><img src = "/img/smm_logo.png" width="300">
-      <h4>Receipt and Shipping bill</h4></center>
-    <p>
-      <div class = "col-sm-12"><p align = "right"><strong>Date and Time:</strong> !DATE AND TIME HERE!</p>
-      <strong>Order ID:</strong> #<%= params[:id] %><br>
-      <strong>Sales:</strong> <%= @order.user.name %><br>
-      <strong>Name:</strong> {{customer.name}}<br>
-      <strong>Contact:</strong> {{customer.info}}
-      </div>
-      <h3 class="visible-print-block" ng-hide="<%= @order.paid %> || paid">
-        <span class="label label-danger">Unpaid</span>
-      </h3>
+    <p class="text-center">
+      <img src="/img/smm_logo.png" width="300">
     </p>
+    <h4 class="text-center">Receipt and Shipping Bill</h4>
+    <hr>
+    <div class="row">
+      <div class="col-xs-6">
+        <p>
+          <strong>Status:</strong>
+          <% if @order.paid %>
+            <% if Rails.env.production? %>
+              <span class="label label-success">Paid</span>
+              <i class="fa fa-check"></i>
+            <% else %>
+              <span class="label label-warning">Paid (DEMO)</span>
+              <i class="fa fa-exclamation-triangle"></i>
+            <% end %>
+          <% else %>
+            <span class="label label-danger">Unpaid</span>
+            <i class="fa fa-times"></i>
+          <% end %>
+        </p>
+        <p>
+          <strong>Name:</strong>
+          <%= @customer.name %>
+        </p>
+        <p>
+          <strong>Contact:</strong>
+          <%= @customer.info %>
+        </p>
+      </div>
+      <div class="col-xs-6">
+        <p>
+          <strong>Date and Time:</strong>
+          <%= @order.updated_at.strftime('%F %T') %>
+        </p>
+        <p>
+          <strong>Order ID:</strong>
+          #<%= params[:id] %>
+        </p>
+        <p>
+          <strong>Sales:</strong>
+          <%= @order.user.name %>
+        </p>
+      </div>
+    </div>
     <table class="table table-striped table-hover table-condensed">
       <thead>
         <tr>
@@ -48,33 +81,39 @@
       </thead>
       <tbody>
         <!-- items in cart -->
-        <tr ng-repeat="item in cart.items">
-          <td class="text-center">{{$index + 1}}</td>
-          <td>{{product[item.id].name}}</td>
-          <td class="text-right">{{product[item.id].price | currency:'฿':0}}</td>
-          <td class="text-right">{{item.quantity | currency:'x ':0}}</td>
-          <td class="text-right">{{product[item.id].price * item.quantity | currency:'฿':0}}</td>
-        </tr>
+        <% @cart.items.each_with_index do |item, index| %>
+          <tr>
+            <td class="text-center"><%= index + 1 %></td>
+            <td><%= product_name(item.id) %></td>
+            <td class="text-right">฿<%= number_with_delimiter(product_price(item.id)) %></td>
+            <td class="text-right">x <%= number_with_delimiter(item.quantity) %></td>
+            <td class="text-right">฿<%= number_with_delimiter(product_price(item.id) * item.quantity) %></td>
+          </tr>
+        <% end %>
         <!-- combos in cart -->
-        <tr ng-repeat="item in cart.combos">
-          <td class="text-center">{{$index + 1 + cart.items.length}}</td>
-          <td>
-            {{combo[item.id].name}}
-            <ul ng-init="result = selectCombo(item.id, item.selected)">
-              <li ng-repeat="name in result track by $index">
-                {{name}}
-              </li>
-            </ul>
-          </td>
-          <td class="text-right">{{combo[item.id].price | currency:'฿':0}}</td>
-          <td class="text-right">x 1</td>
-          <td class="text-right">{{combo[item.id].price | currency:'฿':0}}</td>
-        </tr>
+        <% @cart.combos.each_with_index do |item, index| %>
+          <tr>
+            <td class="text-center"><%= index + 1 + @cart.items.length %></td>
+            <td>
+              <%= combo_name(item.id) %>
+              <ul>
+                <% combo_items(item.id, item.selected).each do |item| %>
+                  <li><%= item %></li>
+                <% end %>
+              </ul>
+            </td>
+            <td class="text-right">฿<%= number_with_delimiter(combo_price(item.id)) %></td>
+            <td class="text-right">x 1</td>
+            <td class="text-right">฿<%= number_with_delimiter(combo_price(item.id)) %></td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
-    <h1 class="text-right">Total {{cartTotal() | currency:'฿':0}}</h1>
+    <h1 class="text-right">
+      Total ฿<%= number_with_delimiter(@order.total) %>
+    </h1>
     <hr>
-    <div ng-show="<%= @order.paid && !@order.completed %> || paid">
+    <% if @order.paid && !@order.completed %>
       <h2>Back-order</h2>
       <p>กรุณานำใบนี้มารับสินค้าสำหรับสินค้าสั่งจอง Bring this receipt to pick up your pre-order item.</p>
       <table class="table table-striped table-hover table-condensed">
@@ -95,41 +134,44 @@
           <% end %>
         </tbody>
       </table>
-    </div>
-    <div class = "col-sm-12"><p align = "center">กรุณาตรวจสอบสินค้าก่อนออกจากเค้าเตอร์ ไม่รับเปลี่ยนหรือคืนสินค้า<br>Please check the item before leaving the counter. All sales are final.<br>คณะกรรมการนักเรียนโรงเรียนสวนกุหลาบวิทยาลัย www.skkornor.com
-    </p></div>
+      <hr>
+    <% end %>
+    <p class="text-center">
+    กรุณาตรวจสอบสินค้าก่อนออกจากเค้าเตอร์ ไม่รับเปลี่ยนหรือคืนสินค้า<br>
+    Please check the item before leaving the counter. All sales are final.<br>
+    คณะกรรมการนักเรียนโรงเรียนสวนกุหลาบวิทยาลัย www.skkornor.com
+    </p>
   </div>
 
   <!-- payModal -->
   <div class="modal fade" id="payModal" tabindex="-1">
     <div class="modal-dialog modal-sm">
-      <div class="modal-content">
+      <%= form_tag pay_path(@order.id), class: 'modal-content' do %>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Pay By Cash</h4>
         </div>
         <div class="modal-body">
-          <form>
-            <!-- TODO: don't believe that input[type=number]s are always positive integers -->
-            <div class="form-group">
-              <label for="total" class="control-label">ต้องชำระ:</label>
-              <input type="number" class="form-control" id="total" value="{{cartTotal()}}" disabled>
-            </div>
-            <div class="form-group">
-              <label for="received" class="control-label">รับมา:</label>
-              <input type="number" class="form-control" id="received" ng-model="received">
-            </div>
-            <div class="form-group">
-              <label for="change" class="control-label">ทอน:</label>
-              <input type="number" class="form-control" id="change" value="{{received - cartTotal()}}" disabled>
-            </div>
-          </form>
+          <!-- TODO: don't believe that input[type=number]s are always positive integers -->
+          <div class="form-group">
+            <label class="control-label">ต้องชำระ:</label>
+            <p class="form-control-static"><%= @order.total %></p>
+          </div>
+          <div class="form-group">
+            <label for="received" class="control-label">รับมา:</label>
+            <input type="number" class="form-control" id="received" ng-model="received">
+          </div>
+          <div class="form-group">
+            <label class="control-label">ทอน:</label>
+            <!-- TODO: max(change,0) -->
+            <p class="form-control-static" ng-bind="received - <%= @order.total %>"></p>
+          </div>
         </div>
         <div class="modal-footer">
-          <!-- TODO: don't reload, use reactive programming instead -->
-          <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="pay('<%= form_authenticity_token %>')" ng-disabled="received - cartTotal() < 0">Pay</button>
+          <button type="submit" class="btn btn-primary" ng-disabled="received - <%= @order.total %> < 0">Pay</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
-      </div>
+      <% end %>
     </div>
   </div>
 
@@ -155,7 +197,7 @@
                   <tr>
                     <td><%= product_name(key) %></td>
                     <!-- TODO: what if `shipped > bought` -->
-                    <td><%= select 'ship', key, options_for_select(0..(value - @order.received[key])) %></td>
+                    <td><%= select 'ship', key, options_for_select(0..(value - @order.received[key])), {}, class: 'form-control' %></td>
                   </tr>
                 <% end %>
               <% end %>
