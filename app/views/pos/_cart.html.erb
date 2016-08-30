@@ -51,7 +51,7 @@
   </li>
 </ul>
 
-<%= form_tag nil, class: 'row' do %>
+<%= form_tag save_path, class: 'row' do %>
   <div class="col-md-6">
     <div class="form-group">
       <div class="input-group">
@@ -75,6 +75,9 @@
     <button class="btn btn-lg btn-danger" type="button" ng-click="clear()" ng-disabled="cartIsEmpty() && customer.name == '' && customer.info == ''">Clear</button>
     <button class="btn btn-lg btn-success" type="submit" ng-disabled="cartIsEmpty()">Checkout</button>
   </div>
+  <% if @order.id %>
+    <input type="hidden" name="id" value="<%= @order.id %>">
+  <% end %>
   <input type="hidden" name="cart" value="{{cart}}">
   <input type="hidden" name="total" value="{{cartTotal()}}">
 <% end %>

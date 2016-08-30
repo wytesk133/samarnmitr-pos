@@ -6,10 +6,9 @@ Rails.application.routes.draw do
   get 'logout' => 'session#logout'
 
   get 'pos' => 'pos#index'
-  post 'pos' => 'pos#save'
+  post 'pos' => 'pos#save', as: :save
   # edit
   get 'pos/edit/:id' => 'pos#edit', as: :edit
-  post 'pos/edit/:id' => 'pos#save'
   # JSON
   get 'pos/products' => 'pos#products', as: :products_json
   get 'pos/combos' => 'pos#combos', as: :combos_json
