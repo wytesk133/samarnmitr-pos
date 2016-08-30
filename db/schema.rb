@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150903054418) do
+ActiveRecord::Schema.define(version: 20160830082539) do
 
   create_table "combos", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -29,9 +29,9 @@ ActiveRecord::Schema.define(version: 20150903054418) do
     t.integer  "user_id",    limit: 4
     t.text     "customer",   limit: 65535
     t.integer  "total",      limit: 4
-    t.boolean  "paid",                     null: false
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+    t.datetime "paid_at"
   end
 
   add_index "orders", ["user_id"], name: "index_orders_on_user_id", using: :btree
