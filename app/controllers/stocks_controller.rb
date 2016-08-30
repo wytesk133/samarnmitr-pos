@@ -3,6 +3,14 @@ class StocksController < ApplicationController
 
   # GET /stocks
   def index
+    @not_shipped = Hash.new(0)
+    Order.where(paid: true).each do |order|
+      bought = order.bought
+      received = order.received
+      bought.each do |key, value|
+        @not_shipped[key] += [value - received[key], 0].max
+      end
+    end
     @products = Product.all
   end
 

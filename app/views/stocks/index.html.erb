@@ -2,7 +2,7 @@
   <div class="alert alert-info"><%= notice %></div>
 <% end %>
 
-<h1>Listing Stocks</h1>
+<h1>Product Stocks</h1>
 
 <p><%= link_to 'New Stock', new_stock_path %></p>
 
@@ -12,6 +12,8 @@
       <th>ID</th>
       <th>Name</th>
       <th>In-Stock</th>
+      <th>Paid but not shipped</th>
+      <th>ต้องสั่งผลิตเพิ่มอีก</th>
     </tr>
   </thead>
 
@@ -21,6 +23,14 @@
         <td><%= product.id %></td>
         <td><%= product.name %></td>
         <td><%= product.current_stock %></td>
+        <td><%= @not_shipped[product.id] %></td>
+        <td>
+          <% if @not_shipped[product.id] <= product.current_stock %>
+            0
+          <% else %>
+            <%= @not_shipped[product.id] - product.current_stock %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

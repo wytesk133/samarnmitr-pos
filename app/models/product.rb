@@ -3,7 +3,7 @@ class Product < ActiveRecord::Base
   scope :available, -> { where(hidden: false) }
   has_many :stocks
 
-  def current_stock #TODO: self????
+  def current_stock
     sum = 0
     self.stocks.each do |stock|
       sum += stock.delta
