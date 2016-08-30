@@ -7,13 +7,12 @@ class AdminController < ApplicationController
 
   def dashboard
     @total = 0
-    @not_shipped = Hash.new(0)
+    @bought = Hash.new(0)
     Order.where(paid: true).each do |order|
       @total += order.total
       bought = order.bought
-      received = order.received
       bought.each do |key, value|
-        @not_shipped[key] += value-received[key]
+        @bought[key] += value
       end
     end
     @products = Product.all
