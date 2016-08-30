@@ -1,0 +1,36 @@
+<div class="modal fade" id="shipModal" tabindex="-1">
+  <div class="modal-dialog">
+    <%= form_tag ship_path(@order.id), class: 'modal-content' do %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Ship</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @order.bought.each do |key, value| %>
+              <% if value - @order.received[key] != 0 %>
+                <tr>
+                  <td><%= product_name(key) %></td>
+                  <!-- TODO: what if `shipped > bought` -->
+                  <td><%= select 'ship', key, options_for_select(0..(value - @order.received[key])), {}, class: 'form-control' %></td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" onclick="$('#shipModal select option:last-child').attr('selected', true);">ALL</button>
+        <button type="submit" class="btn btn-primary">Ship</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    <% end %>
+  </div>
+</div>

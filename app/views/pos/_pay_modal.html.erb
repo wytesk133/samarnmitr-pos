@@ -1,0 +1,30 @@
+<div class="modal fade" id="payModal" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <%= form_tag pay_path(@order.id), class: 'modal-content' do %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Pay By Cash</h4>
+      </div>
+      <div class="modal-body">
+        <!-- TODO: don't believe that input[type=number]s are always positive integers -->
+        <div class="form-group">
+          <label class="control-label">ต้องชำระ:</label>
+          <p class="form-control-static"><%= @order.total %></p>
+        </div>
+        <div class="form-group">
+          <label for="received" class="control-label">รับมา:</label>
+          <input type="number" class="form-control" id="received" ng-model="received">
+        </div>
+        <div class="form-group">
+          <label class="control-label">ทอน:</label>
+          <!-- TODO: max(change,0) -->
+          <p class="form-control-static" ng-bind="received - <%= @order.total %>"></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" ng-disabled="received - <%= @order.total %> < 0">Pay</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    <% end %>
+  </div>
+</div>
