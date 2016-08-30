@@ -26,4 +26,8 @@ Rails.application.routes.draw do
     get 'dashboard' => 'admin#dashboard'
     resources :users, :products, :combos, :stocks
   end
+
+  # TODO: group together with resources:products
+  get 'products/img/:id' => 'products#img', as: :product_img
+  # TODO: combo_img
 end

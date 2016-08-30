@@ -15,7 +15,10 @@
     <!-- TODO: use flexbox -->
     <div class="pos-product-item" ng-repeat="item in products | filter:search:comp as result">
       <!-- TODO: use real icons instead of placeholders -->
-      <p><span class="glyphicon glyphicon-picture"></span></p>
+      <p>
+        <!-- TODO: using id 0 is a hack ;) -->
+        <img src="<%= product_img_path(0) %>{{item.id}}" style="height:50px">
+      </p>
       <p>{{item.name}}</p>
       <p>{{item.price | currency:'฿':0}}</p>
       <button class="btn btn-default" ng-click="addProduct2Cart(item)">

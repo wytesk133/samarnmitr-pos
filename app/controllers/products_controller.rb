@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
-  before_action :authenticate_admin, :admin_sidebar
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_admin, :admin_sidebar, except: :img
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :img]
 
   # GET /products
   def index
@@ -9,6 +9,11 @@ class ProductsController < ApplicationController
 
   # GET /products/1
   def show
+  end
+
+  def img
+    # TODO: what if it's not a png file
+    send_data @product.picture, disposition: 'inline', type: 'image/png'
   end
 
   # GET /products/new
