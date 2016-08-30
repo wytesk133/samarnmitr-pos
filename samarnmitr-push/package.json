@@ -1,0 +1,16 @@
+{
+  "name": "samarnmitr-push",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A (temporary) push server for stock stations",
+  "author": "Waitaya Krongapiradee",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "express": "4.14.0",
+    "socket.io": "1.4.8"
+  },
+  "engines": {
+    "node": "6.5.0",
+    "npm": "3.10.6"
+  }
+}
