@@ -47,10 +47,16 @@ class PosController < ApplicationController
   end
 
   def pay
-    #TODO: paid date-time
+    # TODO: paid timestamp
+    # TODO: set paid timestamp only once
     order = Order.find(params[:id])
     order.paid = true
     order.save!
+    # push data to stock stations
+    uri = URI.parse('http://localhost:3000/publish')
+    params = { :counter => current_user.name, :items => order.bought.to_json }
+    uri.query = URI.encode_www_form( params )
+    Net::HTTP.get(uri)
     redirect_to view_path(order.id)
   end
 
