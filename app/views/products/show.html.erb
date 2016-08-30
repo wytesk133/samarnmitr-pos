@@ -14,7 +14,7 @@
 
 <p>
   <strong>Picture:</strong>
-  <%= @product.picture %>
+  <img src="<%= product_img_path(@product) %>" style="height:200px">
 </p>
 
 <%= link_to 'Edit', edit_product_path(@product) %> |

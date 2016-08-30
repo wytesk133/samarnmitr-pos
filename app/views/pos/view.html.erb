@@ -15,7 +15,7 @@
           </button>
         <% end %>
       <% else %>
-        <a href="<%= edit_path(params[:id]) %>" class="btn btn-warning pull-left">
+        <a href="<%= edit_path(@order) %>" class="btn btn-warning pull-left">
           <i class="fa fa-pencil"></i> Edit
         </a>
         <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#payModal">
