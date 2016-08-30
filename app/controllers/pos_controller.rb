@@ -2,14 +2,22 @@ class PosController < ApplicationController
   before_action :authenticate
 
   def index
+    @order = Order.new
   end
 
   def edit
+    @order = Order.find(params[:id])
+    if @order.paid_at
+      raise 'Cannot modify paid orders'
+    end
   end
 
   def save
-    if params.has_key?(:id) # TODO: this is somehow insecure
-      order = Order.find(params[:id]) #TODO: if not found?
+    if params.has_key?(:id)
+      order = Order.find(params[:id])
+      if order.paid_at
+        raise 'Cannot modify paid orders'
+      end
     else
       order = Order.new
     end
