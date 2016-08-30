@@ -12,9 +12,8 @@ class PosController < ApplicationController
       order = Order.find(params[:id]) #TODO: if not found?
     else
       order = Order.new
-      order.paid = false
     end
-    order.user = current_user #TODO: this is somehow "._."
+    order.user = current_user
     #TODO: verify params again: whether they are submitted or not
     order.cart = params[:cart]
     #TODO: sanitize
@@ -47,16 +46,16 @@ class PosController < ApplicationController
   end
 
   def pay
-    # TODO: paid timestamp
-    # TODO: set paid timestamp only once
     order = Order.find(params[:id])
-    order.paid = true
-    order.save!
-    # push data to stock stations
-    uri = URI.parse('http://localhost:3000/publish')
-    params = { :counter => current_user.name, :items => order.bought.to_json }
-    uri.query = URI.encode_www_form( params )
-    Net::HTTP.get(uri)
+    if !order.paid_at
+      order.paid_at = Time.now
+      order.save!
+      # push data to stock stations
+      uri = URI.parse('http://localhost:3000/publish')
+      params = { :counter => current_user.name, :items => order.bought.to_json }
+      uri.query = URI.encode_www_form( params )
+      Net::HTTP.get(uri)
+    end
     redirect_to view_path(order.id)
   end
 

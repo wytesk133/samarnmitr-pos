@@ -8,7 +8,7 @@ class AdminController < ApplicationController
   def dashboard
     @total = 0
     @bought = Hash.new(0)
-    Order.where(paid: true).each do |order|
+    Order.paid.find_each do |order|
       @total += order.total
       bought = order.bought
       bought.each do |key, value|

@@ -1,5 +1,6 @@
 class Order < ActiveRecord::Base
   belongs_to :user
+  scope :paid, -> { where.not(paid_at: nil) }
   has_many :stocks
 
   # TODO: def total
@@ -31,7 +32,7 @@ class Order < ActiveRecord::Base
 
   def received
     count = Hash.new(0)
-    self.stocks.each do |stock|
+    self.stocks.find_each do |stock|
       count[stock.product.id] -= stock.delta
     end
     count

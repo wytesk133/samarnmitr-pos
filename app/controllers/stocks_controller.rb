@@ -4,7 +4,7 @@ class StocksController < ApplicationController
   # GET /stocks
   def index
     @not_shipped = Hash.new(0)
-    Order.where(paid: true).each do |order|
+    Order.paid.find_each do |order|
       bought = order.bought
       received = order.received
       bought.each do |key, value|
