@@ -14,14 +14,11 @@
             </tr>
           </thead>
           <tbody>
-            <% @order.bought.each do |key, value| %>
-              <% if value - @order.received[key] != 0 %>
-                <tr>
-                  <td><%= product_name(key) %></td>
-                  <!-- TODO: what if `shipped > bought` -->
-                  <td><%= select 'ship', key, options_for_select(0..(value - @order.received[key])), {}, class: 'form-control' %></td>
-                </tr>
-              <% end %>
+            <% @order.pending.each do |key, value| %>
+              <tr>
+                <td><%= product_name(key) %></td>
+                <td><%= select 'ship', key, options_for_select(0..value), {}, class: 'form-control' %></td>
+              </tr>
             <% end %>
           </tbody>
         </table>

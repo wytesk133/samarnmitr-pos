@@ -51,7 +51,17 @@ class Order < ActiveRecord::Base
     count
   end
 
-  # TODO: def pending
+  def pending
+    result = Hash.new(0)
+    bought = self.bought
+    received = self.received
+    bought.each do |key, value|
+      if value - received[key] > 0
+        result[key] = value - received[key]
+      end
+    end
+    result
+  end
 
   def completed
     self.bought == self.received

@@ -128,13 +128,11 @@
           </tr>
         </thead>
         <tbody>
-          <% @order.bought.each do |key, value| %>
-            <% if value - @order.received[key] != 0 %>
-              <tr>
-                <td><%= product_name(key) %></td>
-                <td><%= value - @order.received[key] %></td>
-              </tr>
-            <% end %>
+          <% @order.pending.each do |key, value| %>
+            <tr>
+              <td><%= product_name(key) %></td>
+              <td><%= value %></td>
+            </tr>
           <% end %>
         </tbody>
       </table>

@@ -5,10 +5,8 @@ class StocksController < ApplicationController
   def index
     @not_shipped = Hash.new(0)
     Order.paid.find_each do |order|
-      bought = order.bought
-      received = order.received
-      bought.each do |key, value|
-        @not_shipped[key] += [value - received[key], 0].max
+      order.pending.each do |key, value|
+        @not_shipped[key] += value
       end
     end
     @products = Product.all
