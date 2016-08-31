@@ -3,8 +3,8 @@ class CreateOrders < ActiveRecord::Migration
     create_table :orders do |t|
       t.text :cart
       t.references :user, index: true, foreign_key: true
-      t.text :customer #json
-      t.integer :total #don't have to re-calculate from cart everytime
+      t.text :customer
+      t.integer :total
       t.boolean :paid, null: false
 
       t.timestamps null: false
