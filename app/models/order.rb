@@ -3,8 +3,9 @@ class Order < ActiveRecord::Base
   scope :paid, -> { where.not(paid_at: nil) }
   has_many :stocks
 
-  # TODO: def total
-  # what will happen if a product is deleted or price is changed?
+  # TODO: use json or serialize :cart, OpenStruct (and customer info)
+
+  # TODO: what will happen if a product is deleted or price is changed?
 
   # TODO: cache `bought` and `received`
 
@@ -28,6 +29,18 @@ class Order < ActiveRecord::Base
         end
     end
     count
+  end
+
+  def total
+    cart = JSON.parse(self.cart, object_class: OpenStruct)
+    sum = 0
+    cart.items.each do |item|
+      sum += Product.find(item.id).price * item.quantity
+    end
+    cart.combos.each do |item|
+      sum += Combo.find(item.id).price
+    end
+    sum
   end
 
   def received
