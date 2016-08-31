@@ -72,7 +72,7 @@
   </div>
   <div class="col-md-6">
     <h1>Total {{cartTotal() | currency:'฿':0}}</h1>
-    <button class="btn btn-lg btn-danger" type="button" ng-click="clear()" ng-disabled="cartIsEmpty() && customer.name == '' && customer.info == ''">Clear</button>
+    <button class="btn btn-lg btn-danger" type="button" data-toggle="modal" data-target="#clearModal" ng-disabled="cartIsEmpty() && customer.name == '' && customer.info == ''">Clear</button>
     <button class="btn btn-lg btn-success" type="submit" ng-disabled="cartIsEmpty()">Checkout</button>
   </div>
   <% if @order.id %>
@@ -80,3 +80,5 @@
   <% end %>
   <input type="hidden" name="cart" value="{{cart}}">
 <% end %>
+
+<%= render(partial: 'clear_modal') %>
