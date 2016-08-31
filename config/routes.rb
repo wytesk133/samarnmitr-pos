@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   post 'login' => 'session#auth'
   get 'logout' => 'session#logout'
 
+  get 'orders' => 'orders#index'
+
   get 'pos' => 'pos#index'
   post 'pos' => 'pos#save', as: :save
   # edit
@@ -27,6 +29,6 @@ Rails.application.routes.draw do
   end
 
   # TODO: group together with resources:products
-  get 'products/img/:id' => 'products#img', as: :product_img
+  get 'products/images/:id' => 'products#img', as: :product_img
   # TODO: combo_img
 end

@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   end
 
   def is_admin?(user)
+    # TODO: why u hard code dis line??
     user.id == 1
   end
 
@@ -25,12 +26,8 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_admin
-    #TODO: rewrite this monkey patch with DRY concept
-    if logged_in?
-        not_found unless is_admin?(current_user)
-    else
-        redirect_to :login
-    end 
+    authenticate
+    not_found unless is_admin?(current_user)
   end
 
   def admin_sidebar
