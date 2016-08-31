@@ -10,9 +10,8 @@ Rails.application.routes.draw do
   # edit
   get 'pos/edit/:id' => 'pos#edit', as: :edit
   # JSON
-  get 'pos/products' => 'pos#products', as: :products_json
-  get 'pos/combos' => 'pos#combos', as: :combos_json
-  get 'pos/load_cart/:id' => 'pos#load_cart', as: :load_cart
+  get 'pos/products' => 'pos#products'
+  get 'pos/combos' => 'pos#combos'
   # view details & print reciept
   get 'orders/:id' => 'pos#view', as: :view
   # pay
