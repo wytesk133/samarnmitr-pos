@@ -26,9 +26,9 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.getProduct = function() {
         $http.get(Routes.pos_products_path())
         .then(function(response) {
-            $scope.products = response.data;
-            $scope.product = {}; //hash table ;)
-            angular.forEach(response.data, function(item, i) {
+            $scope.products = response.data; // for ng-repeat
+            $scope.product = {}; // hash table
+            angular.forEach(response.data, function(item) {
                 $scope.product[item.id] = {name: item.name, price: item.price};
             });
             $scope.getCombo();
@@ -40,10 +40,10 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.getCombo = function() {
         $http.get(Routes.pos_combos_path())
         .then(function(response) {
-            $scope.combos = response.data; //TODO: optimize this procedure: there are some unused infomation
-            $scope.combo = {}; //hash table ;)
-            angular.forEach(response.data, function(item, i) {
-                $scope.combo[item.id] = item; //TODO: optimize this procedure: there are some unused infomation
+            $scope.combos = response.data;
+            $scope.combo = {};
+            angular.forEach(response.data, function(item) {
+                $scope.combo[item.id] = { name: item.name, price: item.price, products: item.products };
             });
             $scope.loadCart();
         }, raiseHttpError);
@@ -86,10 +86,12 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope, $http) {
     };
 
     $scope.showComboModal = function(combo) {
-        $scope.currentCombo = combo; //TODO: optimize this procedure
-        $("input[name^='choice-']").prop("checked", false);
-        $('#comboModal').modal('show');
+      $scope.currentCombo = combo;
+      $("input[name^='choice-']").prop("checked", false);
+      $('#comboModal').modal('show');
     };
+
+    $scope.isArray = Array.isArray;
 
     $scope.addCombo2Cart = function() {
         if($(".choice:not(:has(:radio:checked))").length > 0) {
@@ -97,7 +99,7 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope, $http) {
         }
         else {
             var item = {id: $scope.currentCombo.id, selected: []};
-            $("input[name^='choice-']:checked").each(function(){
+            $("input[name^='choice-']:checked").each(function() {
                 item.selected.push(parseInt($(this).val()));
             });
             $scope.cart.combos.push(item);
@@ -108,12 +110,12 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.comboItems = function (id, selected) {
         var result = [], pointer = 0;
         angular.forEach($scope.combo[id].products, function(item) {
-            if(item.type == 'item') {
-                result.push(item.name);
+            if(Array.isArray(item)) {
+                result.push($scope.product[item[selected[pointer]]].name);
+                pointer++;
             }
             else {
-                result.push(item.choices[selected[pointer]].name);
-                pointer++;
+                result.push($scope.product[item].name);
             }
         });
         return result;
@@ -145,10 +147,10 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope, $http) {
 
     $scope.cartTotal = function() {
         var total = 0;
-        angular.forEach($scope.cart.items, function(item, i) {
+        angular.forEach($scope.cart.items, function(item) {
             total += $scope.product[item.id].price * item.quantity;
         });
-        angular.forEach($scope.cart.combos, function(item, i) {
+        angular.forEach($scope.cart.combos, function(item) {
             total += $scope.combo[item.id].price;
         });
         return total;

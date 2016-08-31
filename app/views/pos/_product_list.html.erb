@@ -51,13 +51,13 @@
         <!-- TODO: don't trust user's form input, i.e. validate them again on server side -->
         <ul>
           <li ng-repeat="(itemIndex, item) in currentCombo.products">
-            <span ng-if="item.type == 'item'">{{item.name}}</span>
-            <div class="choice" ng-if="item.type == 'choice'">
+            <span ng-if="!isArray(item)">{{product[item].name}}</span>
+            <div class="choice" ng-if="isArray(item)">
               <span>เลือกหนึ่งชิ้น</span>
-              <div class="radio" ng-repeat="choice in item.choices">
+              <div class="radio" ng-repeat="choice in item">
                 <label>
                   <input type="radio" name="choice-{{itemIndex}}" value="{{$index}}">
-                  {{choice.name}}
+                  {{product[choice].name}}
                 </label>
               </div>
             </div>
