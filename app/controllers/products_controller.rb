@@ -12,6 +12,9 @@ class ProductsController < ApplicationController
   end
 
   def img
+    if @product.hidden
+      authenticate_admin
+    end
     # TODO: what if it's not a png file
     send_data @product.picture, disposition: 'inline', type: 'image/png'
   end

@@ -25,7 +25,7 @@
           <ul class="nav navbar-nav">
             <!-- TODO: highlight active page -->
             <li><a href="<%= pos_path %>" data-no-turbolink>POS</a></li>
-            <li><a href="#">Shipping</a></li>
+            <li><a href="<%= orders_path %>">Orders</a></li>
             <% if is_admin?(current_user) %>
               <li><a href="<%= dashboard_path %>">Admin</a></li>
             <% end %>

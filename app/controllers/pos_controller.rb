@@ -1,6 +1,6 @@
 class PosController < ApplicationController
   before_action :authenticate
-  before_action :set_product, only: [:edit, :view, :pay, :ship]
+  before_action :set_order, only: [:edit, :view, :pay, :ship]
 
   def index
     @order = Order.new
@@ -70,7 +70,7 @@ class PosController < ApplicationController
   end
 
   private
-    def set_product
+    def set_order
       @order = Order.find(params[:id])
     end
 end

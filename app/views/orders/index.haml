@@ -1,0 +1,33 @@
+%h1 All Orders
+%table.table
+  %thead
+    %tr
+      %th ID
+      %th Seller
+      %th Customer
+      %th Total
+      %th Timestamp
+      %th Operations
+  %tbody
+    - @orders.each do |order|
+      %tr
+        %td= order.id
+        %td= order.user.name
+        %td= JSON.parse(order.customer)['name']
+        %td= order.total
+        - if order.paid_at
+          %td= order.paid_at.strftime('%F %T')
+        - else
+          %td N/A
+        %td
+          = link_to('View', view_path(order))
+          - if order.paid_at
+            - if is_admin?(current_user)
+              |
+              Un-pay
+          - else
+            |
+            = link_to('Edit', edit_path(order))
+          - if is_admin?(current_user)
+            |
+            Delete
