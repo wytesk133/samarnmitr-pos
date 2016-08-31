@@ -159,11 +159,4 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.cartIsEmpty = function() {
     return $scope.cart.items.length + $scope.cart.combos.length == 0;
   };
-
-  // TODO: change to modal
-  $scope.clear = function() {
-    if (confirm("Clear shopping cart?")) {
-      $scope.init();
-    }
-  };
 }]);
