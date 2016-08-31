@@ -94,17 +94,13 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.isArray = Array.isArray;
 
   $scope.addCombo2Cart = function() {
-    if($(".choice:not(:has(:radio:checked))").length > 0) {
-      alert("At least one group is blank");
-    }
-    else {
-      var item = {id: $scope.currentCombo.id, selected: []};
-      $("input[name^='choice-']:checked").each(function() {
-        item.selected.push(parseInt($(this).val()));
-      });
-      $scope.cart.combos.push(item);
-      $('#comboModal').modal('hide');
-    }
+    var item = {id: $scope.currentCombo.id, selected: []};
+    $("input[name^='choice-']:checked").each(function() {
+      item.selected.push(parseInt($(this).val()));
+    });
+    $scope.cart.combos.push(item);
+    $('#comboModal').modal('hide');
+    return false;
   };
 
   $scope.comboItems = function (id, selected) {
