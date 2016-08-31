@@ -39,35 +39,4 @@
   </div>
 </div>
 
-<!-- comboModal -->
-<div class="modal fade" id="comboModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">{{currentCombo.name}}</h4>
-      </div>
-      <div class="modal-body">
-        <!-- TODO: don't trust user's form input, i.e. validate them again on server side -->
-        <ul>
-          <li ng-repeat="(itemIndex, item) in currentCombo.products">
-            <span ng-if="!isArray(item)">{{product[item].name}}</span>
-            <div class="choice" ng-if="isArray(item)">
-              <span>เลือกหนึ่งชิ้น</span>
-              <div class="radio" ng-repeat="choice in item">
-                <label>
-                  <input type="radio" name="choice-{{itemIndex}}" value="{{$index}}">
-                  {{product[choice].name}}
-                </label>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" ng-click="addCombo2Cart()">Add to cart</button>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render(partial: 'combo_modal') %>
