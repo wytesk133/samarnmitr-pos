@@ -63,12 +63,11 @@ class PosController < ApplicationController
 
   def ship
     params[:ship].each do |key, value|
-      # TODO: use before_action to comply with DRY
+      key = Integer(key)
       value = Integer(value)
-      if value != 0
+      if value > 0 and value <= @order.pending[key]
         @order.stocks.create!(product_id: key, delta: -value)
       end
-      # TODO: catch any errors and revert changes ._.
     end
     redirect_to view_path(@order)
   end
