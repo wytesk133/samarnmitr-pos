@@ -30,8 +30,8 @@
     <div class="row">
       <div class="col-md-3">
         <span>{{combo[item.id].name}}</span>
-        <ul ng-init="result = selectCombo(item.id, item.selected)">
-          <li ng-repeat="name in result track by $index">
+        <ul>
+          <li ng-repeat="name in comboItems(item.id, item.selected) track by $index">
             {{name}}
           </li>
         </ul>

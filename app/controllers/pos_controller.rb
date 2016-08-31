@@ -1,6 +1,6 @@
 class PosController < ApplicationController
   before_action :authenticate
-  before_action :set_product, only: [:edit, :load_cart, :view, :pay, :ship]
+  before_action :set_product, only: [:edit, :view, :pay, :ship]
 
   def index
     @order = Order.new
@@ -36,9 +36,6 @@ class PosController < ApplicationController
 
   def combos
     @combos = Combo.available
-  end
-
-  def load_cart
   end
 
   def view

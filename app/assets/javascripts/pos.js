@@ -10,11 +10,11 @@
 
 var app = angular.module('samarnmitrPOS', []);
 
-app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
+app.controller('POSCtrl', ['$scope', '$http', function($scope, $http) {
     //initialize shopping cart
     $scope.init = function() {
-        $scope.customer = {name: '', info: ''};
-        $scope.cart = {items:[],  combos:[]};
+      $scope.cart = {items:[],  combos:[]};
+      $scope.customer = {name: '', info: ''};
     };
     $scope.init();
 
@@ -22,42 +22,39 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
         alert('Error occurred!\nPlease reload the page');
     };
 
-    //for 'pos#edit'
-    $scope.loadCart = function() {
-        $http.get(Routes.load_cart_path($scope.cart2Load))
-        .then(function(response) {
-            $scope.customer = response.data.customer;
-            $scope.cart = response.data.cart;
-        }, raiseHttpError);
-    };
-
     //get products list
     $scope.getProduct = function() {
-        $http.get(Routes.products_json_path())
+        $http.get(Routes.pos_products_path())
         .then(function(response) {
             $scope.products = response.data;
             $scope.product = {}; //hash table ;)
-            angular.forEach(response.data, function(item,i) {
+            angular.forEach(response.data, function(item, i) {
                 $scope.product[item.id] = {name: item.name, price: item.price};
             });
-            $scope.getCombo(); //synchronous TODO:find a better way to achieve this
+            $scope.getCombo();
         }, raiseHttpError);
     };
     $scope.getProduct();
 
     //get combos list
     $scope.getCombo = function() {
-        $http.get(Routes.combos_json_path())
+        $http.get(Routes.pos_combos_path())
         .then(function(response) {
             $scope.combos = response.data; //TODO: optimize this procedure: there are some unused infomation
             $scope.combo = {}; //hash table ;)
-            angular.forEach(response.data, function(item,i) {
+            angular.forEach(response.data, function(item, i) {
                 $scope.combo[item.id] = item; //TODO: optimize this procedure: there are some unused infomation
             });
-            if($scope.cart2Load) { //synchronous TODO:find a better way to achieve this
-                $scope.loadCart();
-            }
+            $scope.loadCart();
         }, raiseHttpError);
+    };
+
+    // for pos#edit
+    $scope.loadCart = function() {
+      if($scope.cart2Load) {
+        $scope.cart = $scope.cart2Load.cart;
+        $scope.customer = $scope.cart2Load.customer;
+      }
     };
 
     $scope.addProduct2Cart = function(product) {
@@ -108,9 +105,9 @@ app.controller('POSCtrl', ['$scope', '$http', function($scope,$http) {
         }
     };
 
-    $scope.selectCombo = function (id, selected) {
+    $scope.comboItems = function (id, selected) {
         var result = [], pointer = 0;
-        angular.forEach($scope.combo[id].products, function(item, i) {
+        angular.forEach($scope.combo[id].products, function(item) {
             if(item.type == 'item') {
                 result.push(item.name);
             }
