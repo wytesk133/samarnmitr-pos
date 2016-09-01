@@ -1,16 +1,18 @@
-# MySQL.  Versions 4.1 and 5.0 are recommended.
+# MySQL.  Versions 5.0+ are recommended.
 #
-# Install the MySQL driver:
-#   gem install activerecord-jdbcmysql-adapter
+# Install the MYSQL driver
+#   gem install mysql2
 #
-# Configure Using Gemfile
-# gem 'activerecord-jdbcmysql-adapter'
+# Ensure the MySQL gem is defined in your Gemfile
+#   gem 'mysql2'
 #
 # And be sure to use new-style password hashing:
 #   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
 #
 default: &default
-  adapter: mysql
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
   username: <%= ENV['SAMARNMITR_DATABASE_USERNAME'] %>
   password: <%= ENV['SAMARNMITR_DATABASE_PASSWORD'] %>
   host: <%= ENV['SAMARNMITR_DATABASE_HOST'] %>
@@ -38,7 +40,7 @@ test:
 # On Heroku and other platform providers, you may have a full connection URL
 # available as an environment variable. For example:
 #
-#   DATABASE_URL="mysql://myuser:mypass@localhost/somedatabase"
+#   DATABASE_URL="mysql2://myuser:mypass@localhost/somedatabase"
 #
 # You can use this database configuration with:
 #
