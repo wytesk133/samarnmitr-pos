@@ -24,7 +24,7 @@
           - if order.paid_at
             - if current_user.is_admin
               |
-              Un-pay
+              = link_to t('pos.refund'), refund_order_path(order), method: :delete
           - else
             |
             = link_to(t('resources.edit'), edit_order_path(order))

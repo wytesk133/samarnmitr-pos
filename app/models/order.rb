@@ -1,7 +1,7 @@
 class Order < ActiveRecord::Base
   belongs_to :user
   scope :paid, -> { where.not(paid_at: nil) }
-  has_many :stocks
+  has_many :stocks, dependent: :destroy
 
   # TODO: use json or serialize :cart, OpenStruct (and customer info)
 

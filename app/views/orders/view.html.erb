@@ -5,6 +5,9 @@
         <button class="btn btn-info pull-left" onclick="window.print()">
           <i class="fa fa-print"></i> <%= t('pos.print') %>
         </button>
+        <a href="<%= refund_order_path(@order) %>" class="btn btn-danger pull-left" data-method="delete">
+          <i class="fa fa-undo"></i> <%= t('pos.refund') %>
+        </a>
         <% if @order.completed %>
           <button class="btn btn-default pull-right" disabled>
             <i class="fa fa-shopping-bag"></i> <%= t('pos.all_done') %>!

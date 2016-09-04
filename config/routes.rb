@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   get 'orders/:id' => 'orders#view', as: :view_order
   post 'orders/:id/pay' => 'orders#pay', as: :pay_order
   post 'orders/:id/ship' => 'orders#ship', as: :ship_order
+  delete 'orders/:id/refund' => 'orders#refund', as: :refund_order
 
   get 'admin' => 'admin#index'
 
