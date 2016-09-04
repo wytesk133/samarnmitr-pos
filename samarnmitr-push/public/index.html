@@ -1,5 +1,47 @@
-<ul>
-  <li>
-    <a href="sample.html">sample</a>
-  </li>
-</ul>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sample Station</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="jquery-3.1.0.slim.min.js"></script>
+    <script>
+    let socket = io()
+    socket.emit('subscribe', [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46])
+    socket.on('push', (data) => {
+      console.log(data);
+      $('tbody').append(`
+        <tr>
+          <td>${data.counter}</td>
+          <td>${data.item}</td>
+          <td>${data.quantity}</td>
+          <td>
+            <button class="btn btn-default" onclick="$(this).parent().parent().remove()">
+              X
+            </button>
+          </td>
+        </tr>
+      `);
+    })
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1>Sample Station</h1>
+          <table class="table table-bordered table-striped table-hover">
+            <thead>
+              <tr>
+                <th>Counter</th>
+                <th>Product</th>
+                <th>Quantity</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
