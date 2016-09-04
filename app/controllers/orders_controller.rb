@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
   before_action :authenticate
+  before_action :authenticate_admin, only: :refund
   before_action :set_order, except: :index
 
   def index
@@ -28,6 +29,13 @@ class OrdersController < ApplicationController
         @order.stocks.create!(product_id: key, delta: -value)
       end
     end
+    redirect_to view_order_path(@order)
+  end
+
+  def refund
+    @order.paid_at = nil
+    @order.save!
+    @order.stocks.clear
     redirect_to view_order_path(@order)
   end
 
