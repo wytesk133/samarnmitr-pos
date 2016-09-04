@@ -20,14 +20,14 @@
         - else
           %td N/A
         %td
-          = link_to('View', view_path(order))
+          = link_to(t('resources.view'), view_order_path(order))
           - if order.paid_at
             - if current_user.is_admin
               |
               Un-pay
           - else
             |
-            = link_to('Edit', edit_path(order))
+            = link_to(t('resources.edit'), edit_order_path(order))
           - if current_user.is_admin
             |
-            Delete
+            = t('resources.delete')

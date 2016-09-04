@@ -10,16 +10,14 @@ Rails.application.routes.draw do
   get 'pos' => 'pos#index'
   post 'pos' => 'pos#save', as: :save
   # edit
-  get 'pos/edit/:id' => 'pos#edit', as: :edit
+  get 'pos/edit/:id' => 'pos#edit', as: :edit_order
   # JSON
   get 'pos/products' => 'pos#products'
   get 'pos/combos' => 'pos#combos'
   # view details & print reciept
-  get 'orders/:id' => 'pos#view', as: :view
-  # pay
-  post 'orders/:id/pay' => 'pos#pay', as: :pay
-  # ship
-  post 'orders/:id/ship' => 'pos#ship', as: :ship
+  get 'orders/:id' => 'orders#view', as: :view_order
+  post 'orders/:id/pay' => 'orders#pay', as: :pay_order
+  post 'orders/:id/ship' => 'orders#ship', as: :ship_order
 
   get 'admin' => 'admin#index'
 

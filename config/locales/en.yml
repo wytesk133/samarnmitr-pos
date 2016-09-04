@@ -37,7 +37,9 @@ en:
     ship: 'Ship'
     print: 'Print'
     all_done: 'All Done'
+    refund: 'Refund'
   resources: # TODO: use activerecord instead?
+    view: 'View'
     new: 'New'
     create: 'Create'
     edit: 'Edit'
