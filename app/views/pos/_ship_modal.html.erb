@@ -17,7 +17,7 @@
             <% @order.pending.each do |key, value| %>
               <tr>
                 <td><%= product_name(key) %></td>
-                <td><%= select 'ship', key, options_for_select(0..value), {}, class: 'form-control' %></td>
+                <td><%= select 'ship', key, options_for_select(0..value), {}, class: 'form-control input-sm' %></td>
               </tr>
             <% end %>
           </tbody>

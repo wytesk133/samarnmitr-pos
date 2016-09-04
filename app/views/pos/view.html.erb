@@ -3,45 +3,45 @@
     <div class="hidden-print">
       <% if @order.paid_at %>
         <button class="btn btn-info pull-left" onclick="window.print()">
-          <i class="fa fa-print"></i> Print
+          <i class="fa fa-print"></i> <%= t('pos.print') %>
         </button>
         <% if @order.completed %>
           <button class="btn btn-default pull-right" disabled>
-            <i class="fa fa-shopping-bag"></i> All Done!
+            <i class="fa fa-shopping-bag"></i> <%= t('pos.all_done') %>!
           </button>
         <% else %>
           <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#shipModal">
-            <i class="fa fa-shopping-bag"></i> Ship
+            <i class="fa fa-shopping-bag"></i> <%= t('pos.ship') %>
           </button>
         <% end %>
       <% else %>
         <a href="<%= edit_path(@order) %>" class="btn btn-warning pull-left">
-          <i class="fa fa-pencil"></i> Edit
+          <i class="fa fa-pencil"></i> <%= t('resources.edit') %>
         </a>
         <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#payModal">
-          <i class="fa fa-usd"></i> Pay
+          <i class="fa fa-usd"></i> <%= t('pos.pay') %>
         </button>
       <% end %>
     </div>
     <p class="text-center">
-      <img src="/img/smm_logo.png" width="300">
+      <%= image_tag('smm59_logo.png', width: 300) %>
     </p>
     <h4 class="text-center">Receipt and Shipping Bill</h4>
     <hr>
     <div class="row">
       <div class="col-xs-6">
         <p>
-          <strong>Status:</strong>
+          <strong><%= t('pos.status') %>:</strong>
           <% if @order.paid_at %>
             <% if Rails.env.production? %>
-              <span class="label label-success">Paid</span>
+              <span class="label label-success"><%= t('pos.paid') %></span>
               <i class="fa fa-check"></i>
             <% else %>
-              <span class="label label-warning">Paid (DEMO)</span>
+              <span class="label label-warning"><%= t('pos.paid') %> (DEMO)</span>
               <i class="fa fa-exclamation-triangle"></i>
             <% end %>
           <% else %>
-            <span class="label label-danger">Unpaid</span>
+            <span class="label label-danger"><%= t('pos.not_paid') %></span>
             <i class="fa fa-times"></i>
           <% end %>
         </p>
