@@ -16,7 +16,9 @@ class OrdersController < ApplicationController
     if !@order.paid_at
       @order.paid_at = Time.now
       @order.save!
-      push
+      if !current_user.is_admin
+        push
+      end
     end
     redirect_to view_order_path(@order)
   end

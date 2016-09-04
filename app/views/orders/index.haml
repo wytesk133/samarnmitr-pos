@@ -14,7 +14,7 @@
         %td= order.id
         %td= order.user.name
         %td= JSON.parse(order.customer)['name']
-        %td= order.total
+        %td= number_with_delimiter(order.total)
         - if order.paid_at
           %td= order.paid_at.strftime('%F %T')
         - else
@@ -24,7 +24,7 @@
           - if order.paid_at
             - if current_user.is_admin
               |
-              = link_to t('pos.refund'), refund_order_path(order), method: :delete
+              = link_to t('pos.refund'), refund_order_path(order), method: :delete, data: { confirm: "Are you sure?" }
           - else
             |
             = link_to(t('resources.edit'), edit_order_path(order))
