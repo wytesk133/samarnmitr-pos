@@ -20,10 +20,27 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  site_title: "Samarnmitr POS System"
-  login_title: "Samarnmitr"
-  login: "Login"
-  logout: "Logout"
-  username: "Username"
-  password: "Password"
-  password_confirmation: "Password Confirmation"
+  site_title: 'Samarnmitr POS System'
+  login_title: 'Samarnmitr'
+  login: 'Login'
+  logout: 'Logout'
+  username: 'Username'
+  password: 'Password'
+  password_confirmation: 'Password Confirmation'
+  pos:
+    checkout: 'Checkout'
+    clear: 'Clear'
+    pay: 'Pay'
+    status: 'Status'
+    paid: 'Paid'
+    not_paid: 'Not Paid'
+    ship: 'Ship'
+    print: 'Print'
+    all_done: 'All Done'
+  resources: # TODO: use activerecord instead?
+    new: 'New'
+    create: 'Create'
+    edit: 'Edit'
+    update: 'Update'
+    delete: 'Delete'
+    save: 'Save'
