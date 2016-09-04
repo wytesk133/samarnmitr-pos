@@ -2,7 +2,6 @@ let path = require('path')
 let express = require('express')
 let app = express()
 let io = require('socket.io')()
-let product = {}
 
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -16,8 +15,8 @@ app.get('/publish', (req, res, next) => {
   for (let key in items) {
     io.to(key).emit('push', {
       counter: counter,
-      item: product[key],
-      quantity: items[key]
+      item: items[key].name,
+      quantity: items[key].quantity
     })
   }
   res.end()
@@ -32,15 +31,6 @@ io.on('connection', (socket) => {
     })
   })
 })
-
-// read product list
-
-console.log('Loading product list ...')
-require('./products.json').forEach(item => {
-  product[item.id] = item.name
-})
-console.log(product)
-console.log('Loading product list ... DONE!')
 
 // listen
 

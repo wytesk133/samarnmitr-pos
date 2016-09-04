@@ -20,8 +20,8 @@ class PosController < ApplicationController
       end
     else
       order = Order.new
+      order.user = current_user
     end
-    order.user = current_user
     #TODO: verify params again: whether they are submitted or not
     order.cart = params[:cart]
     #TODO: sanitize
@@ -51,7 +51,11 @@ class PosController < ApplicationController
       # push data to stock stations
       # TODO: migrate to rails 5 and use actioncable
       uri = URI.parse('http://localhost:3000/publish')
-      params = { :counter => current_user.name, :items => @order.bought.to_json }
+      result = {}
+      @order.bought.each do |key, value|
+        result[key] = { name: Product.find(key).name, quantity: value }
+      end
+      params = { :counter => current_user.name, :items => result.to_json }
       uri.query = URI.encode_www_form(params)
       Net::HTTP.get(uri)
     end
