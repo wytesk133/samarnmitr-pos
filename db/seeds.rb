@@ -1,7 +1,7 @@
 # Create root and Counter A-J (10 counters)
 # TODO: output something to STDOUT so when you run db:seed you can see something moving :)
 User.create!([
-{ username: 'root', name: 'Administrator', password: 'iamroot' },
+{ username: 'root', name: 'Administrator', password: 'iamroot', is_admin: true },
 { username: 'cta', name: 'Counter A', password: 'cta' },
 { username: 'ctb', name: 'Counter B', password: 'ctb' },
 { username: 'ctc', name: 'Counter C', password: 'ctc' },

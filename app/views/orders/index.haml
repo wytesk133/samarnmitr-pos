@@ -22,12 +22,12 @@
         %td
           = link_to('View', view_path(order))
           - if order.paid_at
-            - if is_admin?(current_user)
+            - if current_user.is_admin
               |
               Un-pay
           - else
             |
             = link_to('Edit', edit_path(order))
-          - if is_admin?(current_user)
+          - if current_user.is_admin
             |
             Delete

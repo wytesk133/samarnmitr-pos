@@ -28,7 +28,7 @@
             <!-- TODO: highlight active page -->
             <li><a href="<%= pos_path %>" data-no-turbolink>POS</a></li>
             <li><a href="<%= orders_path %>">Orders</a></li>
-            <% if is_admin?(current_user) %>
+            <% if current_user.is_admin %>
               <li><a href="<%= dashboard_path %>">Admin</a></li>
             <% end %>
           </ul>
