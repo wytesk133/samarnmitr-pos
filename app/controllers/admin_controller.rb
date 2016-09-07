@@ -6,15 +6,15 @@ class AdminController < ApplicationController
   end
 
   def dashboard
-    @total = 0
+    @net_sales = Order.net_sales
+    @gross_profit = Order.gross_profit
+    @products = Product.all
     @bought = Hash.new(0)
     Order.paid.find_each do |order|
-      @total += order.total
       bought = order.bought
       bought.each do |key, value|
         @bought[key] += value
       end
     end
-    @products = Product.all
   end
 end

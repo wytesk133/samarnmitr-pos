@@ -31,6 +31,18 @@ class Order < ActiveRecord::Base
     count
   end
 
+  def cost
+    cart = JSON.parse(self.cart, object_class: OpenStruct)
+    sum = 0
+    cart.items.each do |item|
+      sum += Product.find(item.id).cost * item.quantity
+    end
+    cart.combos.each do |item|
+      sum += Combo.find(item.id).cost(item.selected)
+    end
+    sum
+  end
+
   def total
     cart = JSON.parse(self.cart, object_class: OpenStruct)
     sum = 0
@@ -65,5 +77,22 @@ class Order < ActiveRecord::Base
 
   def completed
     self.bought == self.received
+  end
+
+  # https://en.wikipedia.org/wiki/Sales_(accounting)#Other_terms
+  def self.net_sales
+    sum = 0
+    Order.paid.find_each do |order|
+      sum += order.total
+    end
+    sum
+  end
+
+  def self.gross_profit
+    sum = 0
+    Order.paid.find_each do |order|
+      sum += order.total - order.cost
+    end
+    sum
   end
 end
