@@ -5,7 +5,7 @@
         <button class="btn btn-info pull-left" onclick="window.print()">
           <i class="fa fa-print"></i> <%= t('pos.print') %>
         </button>
-        <% if current_user.is_admin %>
+        <% if current_user.is_admin? %>
           <a href="<%= refund_order_path(@order) %>" class="btn btn-danger pull-left" data-method="delete" data-confirm="Are you sure?">
             <i class="fa fa-undo"></i> <%= t('pos.refund') %>
           </a>

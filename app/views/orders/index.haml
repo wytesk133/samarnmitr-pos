@@ -22,12 +22,12 @@
         %td
           = link_to(t('resources.view'), view_order_path(order))
           - if order.paid_at
-            - if current_user.is_admin
+            - if current_user.is_admin?
               |
               = link_to t('pos.refund'), refund_order_path(order), method: :delete, data: { confirm: "Are you sure?" }
           - else
             |
             = link_to(t('resources.edit'), edit_order_path(order))
-          - if current_user.is_admin
+          - if current_user.is_admin?
             |
             = t('resources.delete')

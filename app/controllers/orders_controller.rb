@@ -16,7 +16,7 @@ class OrdersController < ApplicationController
     if !@order.paid_at
       @order.paid_at = Time.now
       @order.save!
-      if !current_user.is_admin
+      if !current_user.is_admin?
         push
       end
     end

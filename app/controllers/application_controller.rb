@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate_admin
     authenticate
-    not_found unless current_user.is_admin
+    not_found unless current_user.is_admin?
   end
 
   def admin_sidebar
